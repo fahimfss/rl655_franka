@@ -1,0 +1,11 @@
+{"duration": 5.883010149002075, "episode_reward": 70.39000000000001, "episode": 1.0, "step": 150}
+{"duration": 5.876659631729126, "episode_reward": 34.82999999999999, "episode": 2.0, "step": 300}
+{"duration": 5.896397590637207, "episode_reward": 65.02999999999997, "episode": 3.0, "step": 450}
+{"duration": 5.884629487991333, "episode_reward": 76.27000000000002, "episode": 4.0, "step": 600}
+{"duration": 5.9003496170043945, "episode_reward": 86.17000000000004, "episode": 5.0, "step": 750}
+{"duration": 5.867391347885132, "episode_reward": 39.65999999999998, "episode": 6.0, "step": 900}
+{"duration": 5.888172626495361, "episode_reward": 89.41000000000003, "episode": 7.0, "step": 1050}
+{"duration": 5.882081985473633, "episode_reward": 44.320000000000064, "episode": 8.0, "step": 1200}
+{"duration": 5.88116192817688, "episode_reward": 26.369999999999987, "episode": 9.0, "step": 1350}
+{"duration": 5.884908437728882, "episode_reward": 56.87999999999998, "episode": 10.0, "step": 1500}
+{"duration": 5.892582416534424, "episode_reward": 92.77000000000002, "episode": 11.0, "step": 1650}
