@@ -605,6 +605,7 @@ class camera():
         self.image_width = image_width
         self.image_height = image_height
         self.frame= None 
+        # self.cnt = 0
 
     def get_state(self):
         ret, frame = self.cap.read()
@@ -612,6 +613,9 @@ class camera():
             # frame = cv2.resize(frame, None, fx=1/4, fy=1/4, interpolation=cv2.INTER_AREA)
             # TODO: verify
             frame = cv2.resize(frame, (self.image_width, self.image_height))
+            # path = '/home/franka/project/ReLoDFranka/rl655/' + str(self.cnt) + '.png'
+            # self.cnt += 1
+            # cv2.imwrite(path, frame)
             # cv2.imshow('image', frame)
             # cv2.waitKey(0)
             self.frame = frame
