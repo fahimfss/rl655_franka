@@ -195,7 +195,9 @@ class FrankaPanda_Visual_Reacher_V0(gym.Env):
 
         # Stabilize the image
         for i in range(5):
-            self.camera.get_state() 
+            image = self.camera.get_state() 
+            path = '/home/franka/project/ReLoDFranka/rl655/reset_imgs/' + str(i) + '.png'
+            cv2.imwrite(path, image)
         
         img = np.transpose(self.camera.get_state(), (2, 1, 0))
 
