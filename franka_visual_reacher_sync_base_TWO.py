@@ -132,10 +132,12 @@ def main():
 
     rewards_path = args.work_dir+'/rewards.txt'
 
+    sample_time_path = args.work_dir+'/sample_time.txt'
     env_time_path = args.work_dir+'/env_time.txt'
     batch_time_path = args.work_dir+'/batch_time.txt'
     update_time_path = args.work_dir+'/update_time.txt'
 
+    sample_time_fl = open(sample_time_path, "w+")
     rewards_fl = open(rewards_path, "w+")
     env_time_fl = open(env_time_path, "w+")
     batch_time_fl = open(batch_time_path, "w+")
@@ -226,13 +228,16 @@ def main():
             #         cv2.waitKey(1)
 
             # select an action
+            t1 = time.time()
             action = agent.sample_action((image, prop))
+            sample_time = time.time() - t1
 
+            t1 = time.time()
             # step in the environment
             next_image, next_prop, reward, epi_done, _ = env.step(action)
 
             # store
-            t1 = time.time()
+            
             agent.push_sample((image, prop), action, reward, (next_image, next_prop), epi_done)
             env_time = time.time() - t1
 
@@ -241,10 +246,12 @@ def main():
             #     for k, v in stat.items():
             #         L.log(k, v, total_steps)
 
-            env_time_fl.write(str(env_time)+'\n')
+           
             if batch_tm is not None:
+                env_time_fl.write(str(env_time)+'\n')
                 batch_time_fl.write(str(batch_tm)+'\n')
                 update_time_fl.write(str(update_tm)+'\n')
+                sample_time_fl.write(str(sample_time)+'\n')
 
             image = next_image
             prop = next_prop
@@ -301,6 +308,7 @@ def main():
 
     # Clean up
 
+    sample_time_fl.close()
     env_time_fl.close()
     batch_time_fl.close()
     update_time_fl.close()
