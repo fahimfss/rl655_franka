@@ -47,19 +47,20 @@ def parse_args():
     parser.add_argument('--joint_history', default=1, type=int)
     parser.add_argument('--ignore_joint', default=False, action='store_true')
     parser.add_argument('--episode_length_time', default=6.0, type=float)
-    parser.add_argument('--dt', default=0.07, type=float)
+    parser.add_argument('--dt', default=0.075, type=float)
 
     parser.add_argument('--size_tol', default=0.5, type=float)
     parser.add_argument('--center_tol', default=0.1, type=float)
     parser.add_argument('--reward_tol', default=2.0, type=float)
     parser.add_argument('--reset_penalty_steps', default=70, type=int)
     parser.add_argument('--reward', default=-1, type=float)
+    parser.add_argument('--reward_scale', default=(75.0/40.0), type=float)
     # replay buffer
     parser.add_argument('--replay_buffer_capacity', default=100000, type=int)
     parser.add_argument('--rad_offset', default=0.01, type=float)
     # train
-    parser.add_argument('--init_steps', default=2833, type=int) 
-    parser.add_argument('--env_steps', default=61200, type=int)
+    parser.add_argument('--init_steps', default=2666, type=int) 
+    parser.add_argument('--env_steps', default=57600, type=int)
     parser.add_argument('--batch_size', default=128, type=int)
     parser.add_argument('--async_mode', default=False, action='store_true')
     parser.add_argument('--max_updates_per_step', default=1.0, type=float)
@@ -164,6 +165,8 @@ def main():
     utils.set_seed_everywhere(args.seed, env)
 
     image, prop = env.reset()
+
+    #print(args.reward_scale)
     
     input('go?')
     
@@ -235,7 +238,7 @@ def main():
             t1 = time.time()
             # step in the environment
             next_image, next_prop, reward, epi_done, _ = env.step(action)
-
+            reward = reward * args.reward_scale
             # store
             
             agent.push_sample((image, prop), action, reward, (next_image, next_prop), epi_done)

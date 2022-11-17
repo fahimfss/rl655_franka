@@ -200,13 +200,19 @@ class SACRADLearner(BaseLearner):
             return stat
         
         if step > self._args.init_steps and (step % self._args.update_every == 0):
+            sample_time = 0
+            update_time = 0
+            count = 0
             for _ in range(self._args.update_epochs):
                 t1 = time.time()
                 sample = self._replay_buffer.sample()
                 t2 = time.time()
                 stat = self._update(*sample)
                 t3 = time.time()
-            return stat, t2-t1, t3-t2
+                sample_time += (t2 - t1)
+                update_time += (t3 - t2)
+                count += 1
+            return stat, sample_time / count, update_time / count
         
         return None, None, None
     
