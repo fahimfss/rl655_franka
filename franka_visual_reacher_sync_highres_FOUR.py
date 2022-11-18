@@ -133,14 +133,16 @@ def main():
 
     assert args.async_mode == False
 
-    sample_time_path = args.work_dir+'/sample_time.txt'
-    env_time_path = args.work_dir+'/env_time.txt'
+    # sample_time_path = args.work_dir+'/sample_time.txt'
+    # env_time_path = args.work_dir+'/env_time.txt'
+    agent_env_time_path = args.work_dir+'/agent_env_time.txt'
     batch_time_path = args.work_dir+'/batch_time.txt'
     update_time_path = args.work_dir+'/update_time.txt'
 
-    sample_time_fl = open(sample_time_path, "w+")
+    # sample_time_fl = open(sample_time_path, "w+")
+    # env_time_fl = open(env_time_path, "w+")
+    agent_env_time_fl = open(agent_env_time_path, "w+")
     rewards_fl = open(rewards_path, "w+")
-    env_time_fl = open(env_time_path, "w+")
     batch_time_fl = open(batch_time_path, "w+")
     update_time_fl= open(update_time_path, "w+")
 
@@ -229,18 +231,20 @@ def main():
             #         cv2.waitKey(1)
 
             # select an action
+            agent_env_time = 0
             t1 = time.time()
             action = agent.sample_action((image, prop))
-            sample_time = time.time() - t1
+            agent_env_time = time.time() - t1
 
+            
             # step in the environment
-            t1 = time.time()
             next_image, next_prop, reward, epi_done, _ = env.step(action)
             reward = reward * args.reward_scale
-
             # store
+            
+            t1 = time.time()
             agent.push_sample((image, prop), action, reward, (next_image, next_prop), epi_done)
-            env_time = time.time() - t1
+            agent_env_time += (time.time() - t1)
 
             stat, batch_tm, update_tm = agent.update_policy(total_steps)
             # if mode == MODE.LOCAL_ONLY and stat is not None:
@@ -249,10 +253,11 @@ def main():
 
             
             if batch_tm is not None:
-                env_time_fl.write(str(env_time)+'\n')
+                agent_env_time_fl.write(str(agent_env_time)+'\n')
+                # env_time_fl.write(str(env_time)+'\n')
+                # sample_time_fl.write(str(sample_time)+'\n')
                 batch_time_fl.write(str(batch_tm)+'\n')
                 update_time_fl.write(str(update_tm)+'\n')
-                sample_time_fl.write(str(sample_time)+'\n')
 
             image = next_image
             prop = next_prop
@@ -309,8 +314,9 @@ def main():
 
     # Clean up
 
-    sample_time_fl.close()
-    env_time_fl.close()
+    # sample_time_fl.close()
+    # env_time_fl.close()
+    agent_env_time_fl.close()
     batch_time_fl.close()
     update_time_fl.close()
     rewards_fl.close()
