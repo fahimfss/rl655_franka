@@ -228,9 +228,9 @@ def main():
             agent.push_sample((image, prop), action, reward, (next_image, next_prop), epi_done)
 
             stat = agent.update_policy(total_steps)
-            # if mode == MODE.LOCAL_ONLY and stat is not None:
-            #     for k, v in stat.items():
-            #         L.log(k, v, total_steps)
+            if mode == MODE.LOCAL_ONLY and stat is not None:
+                for k, v in stat.items():
+                    L.log(k, v, total_steps)
 
             image = next_image
             prop = next_prop

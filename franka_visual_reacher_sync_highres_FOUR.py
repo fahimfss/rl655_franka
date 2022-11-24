@@ -247,9 +247,9 @@ def main():
             agent_env_time += (time.time() - t1)
 
             stat, batch_tm, update_tm = agent.update_policy(total_steps)
-            # if mode == MODE.LOCAL_ONLY and stat is not None:
-            #     for k, v in stat.items():
-            #         L.log(k, v, total_steps)
+            if mode == MODE.LOCAL_ONLY and stat is not None:
+                for k, v in stat.items():
+                    L.log(k, v, total_steps)
 
             
             if batch_tm is not None:
