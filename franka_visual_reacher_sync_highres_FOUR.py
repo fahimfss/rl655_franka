@@ -204,6 +204,7 @@ def main():
     experiment_done = False
     total_steps = 0
     sub_epi = 0
+    num_updates = 0
     returns = []
     epi_lens = []
     start_time = time.time()
@@ -249,9 +250,8 @@ def main():
             agent_env_time += (time.time() - t1)
 
             stat, batch_tm, update_tm = agent.update_policy(total_steps)
-            if mode == MODE.LOCAL_ONLY and stat is not None:
-                for k, v in stat.items():
-                    L.log(k, v, total_steps)
+            if stat is not None:
+                num_updates = stat['train/num_updates']
 
             
             if batch_tm is not None:
@@ -303,8 +303,9 @@ def main():
             rewards_fl.write(str(rewards)+'\n\n')
             utils.save_returns(args.return_dir+'/return.txt', returns, epi_lens)
 
-            num_updates_fl.write("Episdoe: ", len(returns), ",  Total Steps: ", total_steps, ",  Num Updates: ", agent._learner._num_updates + "\n")
-
+            wr_st = "Episdoe: " + str(len(returns)) + ",  Total Steps: " + str(total_steps) + ",  Num Updates: " + str(num_updates) + "\n"
+            num_updates_fl.write(wr_st)
+            
             if mode == MODE.LOCAL_ONLY:
                 L.log('train/duration', time.time() - epi_start_time, total_steps)
                 L.log('train/episode_reward', ret, total_steps)
