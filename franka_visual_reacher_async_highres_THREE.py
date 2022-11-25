@@ -131,8 +131,10 @@ def main():
     os.makedirs(args.return_dir, exist_ok=False)
 
     rewards_path = args.work_dir+'/rewards.txt'
+    num_updates_path = args.work_dir+'/num_updates.txt'
     
     rewards_fl = open(rewards_path, "w+")
+    num_updates_fl = open(num_updates_path, "w+")
 
     if mode == MODE.LOCAL_ONLY:
         L = Logger(args.return_dir, use_tb=args.save_tb)
@@ -274,6 +276,8 @@ def main():
             rewards_fl.write(str(rewards)+'\n\n')
             utils.save_returns(args.return_dir+'/return.txt', returns, epi_lens)
 
+            num_updates_fl.write("Episdoe: ", len(returns), ",  Total Steps: ", total_steps, ",  Num Updates: ", agent._learner._num_updates + "\n")
+
             if mode == MODE.LOCAL_ONLY:
                 L.log('train/duration', time.time() - epi_start_time, total_steps)
                 L.log('train/episode_reward', ret, total_steps)
@@ -286,6 +290,7 @@ def main():
     agent.save_policy_to_file(args.model_dir, total_steps)
 
     # Clean up
+    num_updates_fl.close()
     rewards_fl.close()
     env.reset()
     agent.close()

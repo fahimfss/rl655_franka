@@ -138,6 +138,7 @@ def main():
     agent_env_time_path = args.work_dir+'/agent_env_time.txt'
     batch_time_path = args.work_dir+'/batch_time.txt'
     update_time_path = args.work_dir+'/update_time.txt'
+    num_updates_path = args.work_dir+'/num_updates.txt'
 
     # sample_time_fl = open(sample_time_path, "w+")
     # env_time_fl = open(env_time_path, "w+")
@@ -145,6 +146,7 @@ def main():
     rewards_fl = open(rewards_path, "w+")
     batch_time_fl = open(batch_time_path, "w+")
     update_time_fl= open(update_time_path, "w+")
+    num_updates_fl = open(num_updates_path, "w+")
 
     if mode == MODE.LOCAL_ONLY:
         L = Logger(args.return_dir, use_tb=args.save_tb)
@@ -301,6 +303,8 @@ def main():
             rewards_fl.write(str(rewards)+'\n\n')
             utils.save_returns(args.return_dir+'/return.txt', returns, epi_lens)
 
+            num_updates_fl.write("Episdoe: ", len(returns), ",  Total Steps: ", total_steps, ",  Num Updates: ", agent._learner._num_updates + "\n")
+
             if mode == MODE.LOCAL_ONLY:
                 L.log('train/duration', time.time() - epi_start_time, total_steps)
                 L.log('train/episode_reward', ret, total_steps)
@@ -316,6 +320,7 @@ def main():
 
     # sample_time_fl.close()
     # env_time_fl.close()
+    num_updates_fl.close()
     agent_env_time_fl.close()
     batch_time_fl.close()
     update_time_fl.close()
