@@ -1,0 +1,6 @@
+Episdoe: 1,  Total Steps: 150,  Num Updates: 0
+Episdoe: 2,  Total Steps: 300,  Num Updates: 0
+Episdoe: 3,  Total Steps: 450,  Num Updates: 0
+Episdoe: 4,  Total Steps: 600,  Num Updates: 0
+Episdoe: 5,  Total Steps: 750,  Num Updates: 0
+Episdoe: 6,  Total Steps: 900,  Num Updates: 0
